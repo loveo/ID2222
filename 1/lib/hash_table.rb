@@ -19,6 +19,19 @@ class HashTable
     get_bucket_from_hash(hash).add(item)
   end
 
+  # Returns the union of all buckets containing this file
+  def candidates_of(file)
+    set = Set.new
+
+    buckets.each do |bucket|
+      if bucket.include?(file)
+        set.merge(bucket)
+      end
+    end
+
+    set
+  end
+
   private 
 
   # Creates empty buckets (sets)

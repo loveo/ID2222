@@ -1,26 +1,34 @@
 # Wrapper for a comparison file
 class ComparisonFile
 
-  SIMILAR_THRESHOLD = 0.2
-  SHINGLE_SIZE = 10
+  SIMILAR_THRESHOLD = 0.01
+  SHINGLE_SIZE      = 10
 
   attr_reader :name
-  attr_reader :shingles, :vector
+  attr_reader :representation
   attr_reader :similar_files
 
   def initialize(name, text)
-    @name   = name
-    @similar_files = []
-    @vector = nil
-    @shingles = Shingler.make_shingles(SHINGLE_SIZE, text)
+    @name           = name
+    @similar_files  = []
+    @representation = FileRepresentation.new
+
+    @representation.set_shingles(Shingler.make_shingles(SHINGLE_SIZE, text))
   end
 
-  # Create the sparse characteristic vector for this file,
+  # Creates the sparse characteristic vector for this file,
   # marking each index with 1 if that shingle is included in the text
-  def create_vector(shingle_set, universe_set)
-    @vector = universe_set.each.map do |shingle|
+  def create_characteristic(shingle_set, universe_set)
+    characteristic = universe_set.each.map do |shingle|
       shingle_set.include?(shingle) ? 1 : 0
     end
+
+    @representation.set_characteristic(characteristic)
+  end
+
+  # Sets the signature vector of this file
+  def set_signature_vector(signature_vector)
+    @representation.set_signature(signature_vector)
   end
 
   # Calculates the Jaccard similarity between this file and another file
@@ -40,8 +48,6 @@ class ComparisonFile
     candidates.each do |candidate|
       similarity = similarity_to(candidate)
 
-      puts "#{self.to_s} and #{candidate.to_s} is #{similarity} similar"
-
       if similarity >= SIMILAR_THRESHOLD
         add_similar_file(candidate, similarity)
       end
@@ -53,6 +59,21 @@ class ComparisonFile
     @name
   end
 
+  # Getter for characteristics vector
+  def vector
+    @representation.characteristic
+  end
+
+  # Fetcher for signature vector
+  def signature_vector
+    @representation.signature
+  end
+
+  # Fetcher for shingles
+  def shingles
+    @representation.shingles
+  end
+
   # Prints a readable version of the similar files
   def print_similarities
     puts to_s
@@ -62,6 +83,21 @@ class ComparisonFile
     else
       similar_files.each do |similar_file|
         puts " - #{similar_file.to_s}"
+      end
+    end
+  end
+
+  # Prints the estimated similarites
+  def print_estimations
+    puts to_s
+
+    if similar_files.empty?
+      puts ' - has no similar files'
+    else
+      similar_files.each do |similar_file|
+        puts " - has an estimated similarity of" +
+             " #{similar_file.get_estimation_to(self)}" + 
+             " to #{similar_file.file.to_s}"
       end
     end
   end
@@ -84,6 +120,31 @@ class ComparisonFile
     vector[index] | file.vector[index]
   end
 
+  # Logical class for different file representations
+  class FileRepresentation
+
+    attr_reader :shingles, :characteristic, :signature
+
+    def initialize
+      @shingles       = nil
+      @characteristic = nil
+      @signature      = nil
+    end
+
+    def set_shingles(shingles)
+      @shingles = shingles
+    end
+
+    def set_characteristic(characteristic)
+      @characteristic = characteristic
+    end
+
+    def set_signature(signature)
+      @signature = signature
+    end
+
+  end
+
   # Wrapper for similar file
   class SimilarFile
 
@@ -97,6 +158,11 @@ class ComparisonFile
     # String reperesentation of this class
     def to_s
       "is similar to #{@file} with #{@similarity} Jaccard similarity"
+    end
+
+    # Returns the estimated similarity between the two files
+    def get_estimation_to(this_file)
+      SignatureMatrix.similarity_between(this_file, file)
     end
 
   end

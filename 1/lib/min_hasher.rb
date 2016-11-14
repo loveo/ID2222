@@ -32,8 +32,6 @@ class MinHasher
   def self.calculate_min_pair(min_pair, index, hash_index)
     hash_value = hash(index, hash_index)
 
-  #    puts "Old hash=#{min_pair.hash}, new hash=#{hash_value}"
-
     if hash_value < min_pair.hash
       min_pair.set_values(hash_value, index)
     end

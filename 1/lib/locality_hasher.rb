@@ -2,21 +2,20 @@
 class LocalityHasher
 
   ROWS_PER_BAND = 5
-  BANDS         = 2
-  TABLE_SIZE    = 2
+  BANDS         = 4
+  TABLE_SIZE    = 10
 
   attr_reader :files
 
-  def initialize(signature_matrix)
-    @files = signature_matrix.files
+  def initialize(files)
+    @files = files
     @table = HashTable.new(TABLE_SIZE)
     place_files_in_buckets
   end
 
   # Gets the candidates of a file exluding the given file
   def candidates_of(file)
-    # use signature vector
-    @table.get_bucket(LocalityHasher.band_hash(file.vector, 0)).delete(file)
+    @table.candidates_of(file).delete(file)
   end
 
   # Helper method to print bucket contents
@@ -40,7 +39,10 @@ class LocalityHasher
   # Places a given file in its buckets
   def place_file_in_buckets(file)
     (0..BANDS).each do |band|
-      @table.add_item(file, LocalityHasher.band_hash(file.vector, band))
+      @table.add_item(
+        file, 
+        LocalityHasher.band_hash(file.signature_vector, band)
+        )
     end
   end
 

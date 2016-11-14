@@ -1,23 +1,21 @@
 # Contains all chacteristics vectors for ComparisonFiles
 class CharacteristicsMatrix
 
-  attr_reader :files
-
-  def initialize(files)
-    @files = files
-    calculate_characteristics
+  # Creates the characteristics matrix, each vector stored in its file
+  def self.create_characteristic_matrix(files)
+    CharacteristicsMatrix.calculate_characteristics(files)
   end
 
   private
 
   # Calculates the characteristics vectors for each file
-  def calculate_characteristics
-    shingle_sets = @files.map(&:shingles)
+  def self.calculate_characteristics(files)
+    shingle_sets = files.map(&:shingles)
 
     universe = CharacteristicsMatrix.shingle_universe(shingle_sets)
 
     shingle_sets.each_with_index do |shingle_set, index|
-      @files[index].create_vector(shingle_set, universe)
+      files[index].create_characteristic(shingle_set, universe)
     end
   end
 

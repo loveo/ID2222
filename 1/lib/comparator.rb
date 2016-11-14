@@ -4,18 +4,22 @@ class Comparator
   def initialize(files)
     @files = files
     @locality = nil
-    
+
     process_files
     compare_files
+
+    print_buckets
+    print_estimations
+    print_similarities
   end
 
   private 
 
   # Calculates characteristics vectors, signatures and min-hashes
   def process_files
-    matrix    = CharacteristicsMatrix.new(@files)
-    signature = SignatureMatrix.new(matrix)
-    @locality = LocalityHasher.new(signature)  
+    CharacteristicsMatrix.create_characteristic_matrix(@files)
+    SignatureMatrix.calculate_min_hashes(@files)
+    @locality = LocalityHasher.new(@files)  
   end
 
   # Compare seach file to the others
@@ -36,6 +40,29 @@ class Comparator
     @locality
       .candidates_of(file)
       .subtract(file.similar_files.map(&:file))
+  end
+
+  # Prints which buckets contain which files
+  def print_buckets
+    @locality.print_buckets
+  end
+
+  # Prints estimations between similar files
+  def print_estimations
+    puts "Estimations"
+
+    @files.each do |file|
+      file.print_estimations
+    end
+  end
+
+  # Prints similarities between similar files
+  def print_similarities
+    puts "Similarities"
+
+    @files.each do |file|
+      file.print_similarities
+    end
   end
 
 end

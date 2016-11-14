@@ -1,38 +1,28 @@
-# Container for signature vectors
+# Creates and compares signature vectors
 class SignatureMatrix
 
-  attr_reader :files, :signature_matrix
+  attr_reader :files
 
-  MIN_HASHES = 10
-
-  def initialize(characteristics_matrix)
-    @files = characteristics_matrix.files
-    @signature_matrix = calculate_min_hashes
-  end
+  MIN_HASHES = 100
 
   # Returns the estimated similarity between to files, using their signatures
-  def similarity_between(file_one, file_two)
-    index_one = signature_matrix.index(file_one)
-    index_two = signature_matrix.index(file_two)
-
+  def self.similarity_between(file_one, file_two)
     SignatureMatrix.similarity_between_signatures(
-      signature_matrix[index_one],
-      signature_matrix[index_two]
-    )
+      file_one.signature_vector,
+      file_two.signature_vector
+      )
+  end
+
+  # Calculates the min hashes to build a signature matrix
+  def self.calculate_min_hashes(files)
+    files.each do |file|
+      file.set_signature_vector(
+        MinHasher.min_hashes(file.vector, MIN_HASHES)
+        )
+    end
   end
 
   private
-
-  # Calculates the min hashes to build a signature matrix
-  def calculate_min_hashes
-    min_hashes = []
-
-    @files.each do |file|
-      min_hashes << MinHasher.min_hashes(file.vector, MIN_HASHES)
-    end
-
-    min_hashes
-  end
 
   # Returns the fraction of components that are equal between two signatures
   def self.similarity_between_signatures(signature_one, signature_two)
