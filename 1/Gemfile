@@ -1,0 +1,16 @@
+source "https://rubygems.org"
+
+# Use reek for code quality
+gem 'reek'
+
+# Use byebug for debugging
+gem 'byebug'
+
+# Use xxhash for string to int hashing
+gem 'xxhash'
+
+# Use ruby-lint for detecting compiler errors
+gem 'ruby-lint'
+
+# Use awesome print for easier debugging
+gem 'awesome_print'
