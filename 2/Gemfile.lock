@@ -33,7 +33,6 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
-    xxhash (0.3.0)
 
 PLATFORMS
   ruby
@@ -43,7 +42,6 @@ DEPENDENCIES
   byebug
   reek
   ruby-lint
-  xxhash
 
 BUNDLED WITH
    1.13.6
