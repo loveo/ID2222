@@ -12,7 +12,10 @@ class SetCounter
 
   # Counts an array for item sets by checking each bucket
   def count_item_sets(item_sets)
-    threaded_count(item_sets)
+    #threaded_count(item_sets)
+	@baskets.rows.each do |basket|
+		SetCounter.count_all_item_sets_in_basket(basket, item_sets)
+	end
   end
 
   # Returns an array of item sets with high enough support

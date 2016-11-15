@@ -16,6 +16,10 @@ class ItemSet
   def check_basket(basket)
     increase_support if in_basket?(basket)
   end
+  
+  def all_item_ids
+	[id] + item_ids
+  end
 
   private
 

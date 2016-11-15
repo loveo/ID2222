@@ -13,6 +13,6 @@ doubletons = set_counter.supported_sets(doubletons)
 
 puts "Time elapsed: #{Time.now - time}"
 
-byebug
+#byebug
 
 puts ""
