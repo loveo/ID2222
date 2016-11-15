@@ -1,5 +1,5 @@
 require 'awesome_print'
-require 'byebug'
+require 'pry'
 require 'thread'
 require 'set'
 

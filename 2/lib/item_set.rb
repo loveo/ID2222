@@ -8,7 +8,7 @@ class ItemSet
     @id       = ids[0]
     @item_ids = ids[1 .. -1]
     @support  = 0
-    @mutex = Mutex.new
+    @mutex    = Mutex.new
   end
 
   # Checks this item set against a basket 
@@ -17,8 +17,13 @@ class ItemSet
     increase_support if in_basket?(basket)
   end
   
+  # Returns all item ids in this item set
   def all_item_ids
-	[id] + item_ids
+    [id] + item_ids
+  end
+
+  def include_ids?(item_ids)
+    all_item_ids == item_ids
   end
 
   private

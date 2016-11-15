@@ -3,8 +3,8 @@ source "https://rubygems.org"
 # Use reek for code quality
 gem 'reek'
 
-# Use byebug for debugging
-gem 'byebug'
+# Use pry for debugging
+gem 'pry'
 
 # Use ruby-lint for detecting compiler errors
 gem 'ruby-lint'
