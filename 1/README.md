@@ -1,6 +1,8 @@
 # Similar Items
+*A small program that calculates similarities between text files*
 
 ## Solution
+*The solution is split into smaller parts*
 
 ### Shingles
 Each file is turned into *shingles* by cutting it into small chunks, 
@@ -47,11 +49,32 @@ Files that passes this far are considered similar and are added to the files (an
 
 ## How to run
 
+### Prerequisites
+The program is written in ruby, but uses jruby to fully utilize threading to increase speed.
+Jruby is highly recommended but ruby can of course be used.
 
-Submission. Your homework solution must include source code if required (with essential comments); 
-Makefile or scripts to build and run; a report (in PDF or a plain text file) with a short description
-of your solution, instructions how to build and to run, command-line parameters, if any
-(including default values), results, e.g., plots or screenshots. 
-You upload your solution in a zip file to Bilda. 
-To get bonus, you should upload your solution before the deadline. 
-Bilda records the submission time. Bonus will not be given, if you miss the deadline.
+### Parameters
+The only argument passable parameters are similarity threshold and files to compare:
+
+ - `threshold:` (optional) float (0, 1], defaults to 0.8
+ - `files:` (required) any amount of files or folders that will be scanned for files
+ 
+### Examples
+
+#### Using jruby
+*note: when using jruby you are required to set the jvm heap size to an appropriate value depending on amount of files*
+
+```bash
+jruby -J-Xmx2048m lib/main.rb 0.75 data/20_newsgroups/sci.*
+```
+
+#### Using ruby
+*note: if rvm (or rbenv etc) is installed, this will run as jruby*
+```bash
+ruby lib/main.rb 0.75 data/20_newsgroups/sci.*
+```
+
+
+The program will tell which file is equal to which.
+
+**Estimated run properties:** 40 seconds and 400MB ram usage per 1k files.
