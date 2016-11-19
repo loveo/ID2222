@@ -59,6 +59,20 @@ The only argument passable parameters are similarity threshold and files to comp
  - `threshold:` (optional) float (0, 1], defaults to 0.8
  - `files:` (required) any amount of files or folders that will be scanned for files
  
+### Other settings
+
+You can also alter the default parameters by changing **lib/settings.rb** to see how the program behaves.
+
+```ruby
+CONFIG = OpenStruct.new(
+  table_size:     20000,  # number of buckets in hash table
+  similarity:     0.8,    # similarity threshold between files
+  min_hashes:     100,    # number of min hashes for signature matrix
+  shingle_size:   10,     # size of shingles
+  pool_size:      8       # number of workers
+  )
+```
+ 
 ### Examples
 
 #### Using jruby
@@ -69,12 +83,12 @@ jruby -J-Xmx2048m lib/main.rb 0.75 data/20_newsgroups/sci.*
 ```
 
 #### Using ruby
-*note: if rvm (or rbenv etc) is installed, this will run as jruby*
+*note: if rvm (or rbenv etc) is installed, this will run as jruby because of .ruby-version*
 ```bash
 ruby lib/main.rb 0.75 data/20_newsgroups/sci.*
 ```
 
 
-The program will tell which file is equal to which.
+The program will tell which file is similar to which and to what degree.
 
-**Estimated run properties:** 40 seconds and 400MB ram usage per 1k files.
+**Estimated run properties:** 40 seconds runtime and 400MB ram usage per 1k files using the 20 newsgroup dataset.
