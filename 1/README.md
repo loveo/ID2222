@@ -79,13 +79,13 @@ CONFIG = OpenStruct.new(
 *note: when using jruby you are required to set the jvm heap size to an appropriate value depending on amount of files*
 
 ```bash
-jruby -J-Xmx2048m lib/main.rb 0.75 data/20_newsgroups/sci.*
+jruby -J-Xmx2048m lib/main.rb 0.75 data/20_newsgroups/sci.* data/file.txt
 ```
 
 #### Using ruby
 *note: if rvm (or rbenv etc) is installed, this will run as jruby because of .ruby-version*
 ```bash
-ruby lib/main.rb 0.75 data/20_newsgroups/sci.*
+ruby lib/main.rb 0.75 data/20_newsgroups/sci.* data/another_file.txt
 ```
 
 
