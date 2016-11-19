@@ -27,7 +27,7 @@ class Shingler
 
   # Hashes a shingle into a 32bit int
   def self.hash_shingle(shingle)
-    XXhash.xxh32(shingle)
+    Zlib.crc32(shingle)
   end
 
 end

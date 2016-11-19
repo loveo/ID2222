@@ -1,9 +1,9 @@
-require 'awesome_print'
-require 'byebug'
-require 'xxhash'
+require 'ostruct'
+require 'zlib'
 require 'set'
 
-require_relative 'characteristics_matrix'
+require_relative 'settings'
+
 require_relative 'signature_matrix'
 require_relative 'comparison_file'
 require_relative 'locality_hasher'
