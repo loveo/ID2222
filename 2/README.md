@@ -2,6 +2,18 @@
 
 ## Solution
 
+### Creating itemsets
+
+#### Creating doubletons
+Doubleton permutaitons were created by taking each singleton and combinging it with every remainging singleton in the list (creating a row in the structure mentioned later). This was an easy way to avoid duplicates.
+
+#### Creating itemsets of any size
+Creating larger itemsets was solved by taking the singletons and appending the larger (doubletons, tripletons etc) set to each singleton. Two checks were added to avoid duplicates. 
+
+Firstly, singletons should not be appended by itemsets in which they are included. (17) and (17, 81) does not produce a valid tripleton. 
+
+Secondly, itemsets that are created must not already exists in a different form. (81, 17 , 202) should not be created if (17, 81, 202) already exists. This was solved by taking the smallest item id and looking through its row (as mentioned above) for duplicates. The list of singletons is ordered (ascending) and (17, 81, 202) will thus be created before (81, 17, 202), making it easy to find duplicates.
+
 ### Counting itemsets
 
 #### Itemsets of size 1
