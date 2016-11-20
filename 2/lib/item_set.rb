@@ -4,10 +4,10 @@ class ItemSet
   attr_reader :item_ids
   attr_reader :id, :support
 
-  def initialize(ids)
+  def initialize(ids, support=0)
     @id       = ids[0]
     @item_ids = ids[1 .. -1]
-    @support  = 0
+    @support  = support
     @mutex    = Mutex.new
   end
 
@@ -22,8 +22,19 @@ class ItemSet
     [id] + item_ids
   end
 
+  # Returns true if item_ids are equal and ordered
   def include_ids?(item_ids)
     all_item_ids == item_ids
+  end
+
+  # Returns true if item_ids are equal
+  def same_ids?(item_ids)
+    all_item_ids.sort == item_ids.sort
+  end
+
+  # String representation of ItemSet
+  def to_s
+    "#{all_item_ids} exists in #{@support} baskets"
   end
 
   private

@@ -1,26 +1,20 @@
 # Counts the support of given ItemSets
 class SetCounter
 
-  FREQUENCY_THRESHOLD = 0.01
-  THREAD_SIZE = 8
-
   def initialize(baskets)
-    @baskets    = baskets
-    @threshold  = baskets.rows.length * FREQUENCY_THRESHOLD
-    @job_queue  = Queue.new
+    @baskets   = baskets
+    @threshold = baskets.rows.length * Settings::CONFIG.support_threshold
+    @job_queue = Queue.new
   end
 
   # Counts an array for item sets by checking each bucket
   def count_item_sets(item_sets)
-    #threaded_count(item_sets)
-	@baskets.rows.each do |basket|
-		SetCounter.count_all_item_sets_in_basket(basket, item_sets)
-	end
+    threaded_count(item_sets)
   end
 
   # Returns an array of item sets with high enough support
   def supported_sets(item_sets)
-    item_sets.values.flatten.reject do |item_set|
+    item_sets.flatten.compact.reject do |item_set|
       item_set.support < @threshold
     end
   end
@@ -32,9 +26,7 @@ class SetCounter
   def threaded_count(item_sets)
     create_job_queue
 
-    create_workers(item_sets).each do |thread|
-      thread.join
-    end
+    create_workers(item_sets).each(&:join)
   end
 
   # Puts each basket on the job queue
@@ -46,12 +38,12 @@ class SetCounter
 
   # Creates worker threads and tells them to count baskets
   def create_workers(item_sets)
-    (0 .. THREAD_SIZE - 1).each.map do 
+    (0 .. Settings::CONFIG.pool_size - 1).map do 
       Thread.new { threaded_basket_count(item_sets) }
     end
   end
 
-  # Thread method that takes baskets from a job queue and counts them
+  # Worker method that takes baskets from a job queue and counts them
   def threaded_basket_count(item_sets)
     while not @job_queue.empty?
       row_index = @job_queue.pop
@@ -60,6 +52,8 @@ class SetCounter
         @baskets.rows[row_index],
         item_sets
         )
+
+      Thread.exit if @job_queue.empty?
     end
   end
 

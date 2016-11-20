@@ -1,8 +1,6 @@
 # Counts how many times each item exists in a basket and creates singletons
 class ItemCounter
 
-  FREQUENCY_THRESHOLD = 0.01
-
   def initialize(baskets)
     @item_counts = []
     @baskets     = baskets
@@ -32,11 +30,13 @@ class ItemCounter
 
   # Returns all singletons that has high enough support
   def create_item_sets
-    threshold  = @baskets.rows.length * FREQUENCY_THRESHOLD
+    threshold  = @baskets.rows.length * Settings::CONFIG.support_threshold
     singletons = []
 
     @item_counts.each_with_index do |support, item_id|
-      singletons << ItemSet.new([item_id]) if support && support >= threshold
+      if support && support >= threshold
+        singletons << ItemSet.new([item_id], support) 
+      end
     end
 
     singletons
