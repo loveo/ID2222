@@ -32,11 +32,12 @@ class SignatureMatrix
   def self.threaded_min_hashing(queue)
     while not queue.empty?
       file = queue.pop
-      puts "#{file.name}"
 
       file.set_signature_vector(
         MinHasher.min_hashes(file.shingles, MIN_HASHES)
         )
+
+      Thread.exit if queue.empty?
     end
   end
 

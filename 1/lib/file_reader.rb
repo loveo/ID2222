@@ -8,8 +8,6 @@ class FileReader
 
   # Returns a list of Comparison Files from a list of file names
   def self.read_files(file_names)
-    puts "Parsing files"
-
     queue = create_work_queue(file_names)
     read_files = Queue.new
     workers = []
@@ -28,6 +26,8 @@ class FileReader
   def self.threaded_read_file(queue, files)
     while not queue.empty?
       files << read_file(queue.pop)
+
+      Thread.exit if queue.empty?
     end
   end
 
