@@ -6,11 +6,11 @@ class SetCreator
     item_ids = singletons.map(&:id)
     create_doubletons_from_item_ids(item_ids)
   end
-  
+
   # Creates permutations of possible frequent item sets
   # given item_sets of any size and frequent singletons
   def self.create_permutations(item_sets, singletons)
-    item_ids      = singletons.map(&:id)
+    item_ids        = singletons.map(&:id)
     permutation_ids = item_sets.map(&:all_item_ids)
 
     create_permutations_from_item_ids(item_ids, permutation_ids)
@@ -18,7 +18,7 @@ class SetCreator
 
   private
 
-  # Creates a hash with item_id as key and an 
+  # Creates a hash with item_id as key and an
   # array of doubleton ItemSets as value
   def self.create_doubletons_from_item_ids(item_ids)
     set_hash = []
@@ -36,7 +36,7 @@ class SetCreator
   # Creates tripleton hash from doubletons and singletons
   def self.create_permutations_from_item_ids(item_ids, item_sets)
     set_hash = []
-    
+
     item_ids.each do |item_id|
       set_hash[item_id] = create_permutations_array(
         set_hash,
@@ -44,7 +44,7 @@ class SetCreator
         item_sets
         )
     end
-    
+
     set_hash
   end
 
@@ -84,5 +84,5 @@ class SetCreator
       ItemSet.new([item_id, sub_index])
     end
   end
-  
+
 end

@@ -1,6 +1,4 @@
-require 'awesome_print'
 require 'ostruct'
-require 'pry'
 require 'set'
 
 require_relative 'settings'
