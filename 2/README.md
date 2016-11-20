@@ -1,14 +1,17 @@
 # Frequent itemsets
+*A program that finds frequent itemsets and association rules based on baskets*
 
 ## Solution
+
+*The solution is split into subsections*
 
 ### Creating itemsets
 
 #### Creating doubletons
-Doubleton permutaitons were created by taking each singleton and combinging it with every remainging singleton in the list (creating a row in the structure mentioned later). This was an easy way to avoid duplicates.
+Doubleton permutations were created by taking each singleton and combinging it with every remainging singleton in the list (creating a row for this singleton id in the structure mentioned later). This was an easy way to avoid duplicates and produced every possible doubleton.
 
 #### Creating itemsets of any size
-Creating larger itemsets was solved by taking the singletons and appending the larger (doubletons, tripletons etc) set to each singleton. Two checks were added to avoid duplicates. 
+Creating larger itemsets was solved by taking the singletons and appending the larger (doubletons, tripletons etc) sets to each singleton. Two checks were added to avoid duplicates. 
 
 Firstly, singletons should not be appended by itemsets in which they are included. (17) and (17, 81) does not produce a valid tripleton. 
 
@@ -27,13 +30,22 @@ The solution used in this project is to look at each item id in a basket, find a
 This was done by creating an array (of itemset arrays) where the index is the item id that row starts with:
 
 ```ruby
-sets[17] = [(17,55, 102), (17, 99, 722), (17, 505, 987) ... ]
+sets[17] = [(17, 55), (17, 99), (17, 505) ... ]
 ```
 
 This datastructure contains few itemsets compared to the total itemsets being counted which made it easy finding itemsets and increasing their support if needed.
 
 To increase throughput even further, threads were used and rows were calculated concurrently by different workers.
-Two small locks were used to achieve this. One on the job queue (bag of row indices) to synchronize work and one mutex lock (synchronization block) when updating the support of an itemset.
+Two small locks were used to achieve this. One on the job queue (bag of row indices) to synchronize work and one mutex lock (synchronization block) when updating the support of an itemset object:
+
+```ruby
+ # Increases the support for this item set
+ def increase_support
+   @mutex.synchronize do 
+     @support += 1
+   end
+ end
+```
 
 ### Finding association rules
 Once all frequent itemsets are found, rules can be deducted.
