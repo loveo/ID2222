@@ -30,14 +30,13 @@ class SignatureMatrix
 
   # Worker method for min hashing
   def self.threaded_min_hashing(queue)
-    while not queue.empty?
-      file = queue.pop
-
-      file.set_signature_vector(
-        MinHasher.min_hashes(file.shingles, MIN_HASHES)
-        )
-
-      Thread.exit if queue.empty?
+    begin
+      while file = queue.pop(true)
+        file.set_signature_vector(
+          MinHasher.min_hashes(file.shingles, MIN_HASHES)
+          )
+      end
+    rescue ThreadError
     end
   end
 

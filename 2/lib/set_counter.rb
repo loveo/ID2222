@@ -38,22 +38,21 @@ class SetCounter
 
   # Creates worker threads and tells them to count baskets
   def create_workers(item_sets)
-    (0 .. Settings::CONFIG.pool_size - 1).map do 
+    (0 .. Settings::CONFIG.pool_size - 1).map do
       Thread.new { threaded_basket_count(item_sets) }
     end
   end
 
   # Worker method that takes baskets from a job queue and counts them
   def threaded_basket_count(item_sets)
-    while not @job_queue.empty?
-      row_index = @job_queue.pop
-
-      SetCounter.count_all_item_sets_in_basket(
-        @baskets.rows[row_index],
-        item_sets
-        )
-
-      Thread.exit if @job_queue.empty?
+    begin
+      while row_index = @job_queue.pop(true)
+        SetCounter.count_all_item_sets_in_basket(
+          @baskets.rows[row_index],
+          item_sets
+          )
+      end
+    rescue ThreadError
     end
   end
 
