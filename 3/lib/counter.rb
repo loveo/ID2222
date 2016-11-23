@@ -3,10 +3,15 @@ class Counter
 
   B = Settings::CONFIG.b
 
-  def initialize(registers)
-    @registers = nil
+  attr_reader :registers
 
-    init_registers(registers)
+  def initialize
+    @registers     = nil
+    @new_registers = nil
+    @changed       = false
+    @mutex         = Mutex.new
+
+    init_registers
   end
 
   # Adds an item (number) to the counter
@@ -19,11 +24,50 @@ class Counter
 
   # Returns the size of the counter
   def size
-    alpha * p_square * registers_sum
+    alpha * p_square * (1.0 / registers_sum)
+  end
+
+  # Returns the union register between two registers
+  def self.union(register_a, register_b)
+    register_a.each_with_index.map do |value, index|
+      [value, register_b[index]].max
+    end
+  end
+
+  # Returns true if the pending registers have been altered
+  def value_changed?
+    @changed
+  end
+
+  # Applies any pending changes
+  def apply_changes
+    if @changed
+      @registers = @new_registers.dup
+      @changed = false
+    end
+  end
+
+  # Merges this counter with anohter counter
+  def merge(counter)
+    @mutex.synchronize do
+      @new_registers = Counter.union(@new_registers, counter.registers)
+      @changed = has_changed?
+    end
   end
 
   private
 
+  # Returns true if this counter has changed this iteration
+  def has_changed?
+    @changed || not new_registers_changed?
+  end
+
+  # Returns true if the new registers has changed from the current
+  def new_registers_changed?
+    not @new_registers == @registers
+  end
+
+  # Sums the registers acoording to HyperLogLog algorithm
   def registers_sum
     sum = 0
 
@@ -34,7 +78,7 @@ class Counter
     sum
   end
 
-  # Alpha constant based on p (register size ) = 2 ^ B
+  # Alpha constant based on p (register size ) = 2 ^ B from the paper
   def alpha
     case B
     when 4
@@ -48,6 +92,7 @@ class Counter
     end
   end
 
+  # Helper method for p ^ 2
   def p_square
     @registers.size ** 2
   end
@@ -71,9 +116,10 @@ class Counter
     end
   end
 
-  # Inits the registers
-  def init_registers(registers)
-    @registers = registers.times.map { -Float::INFINITY }
+  # Inits the registers with negative infinity
+  def init_registers
+    @registers = (2 ** B).times.map { -Float::INFINITY }
+    @new_registers = @registers.dup
   end
 
 end
