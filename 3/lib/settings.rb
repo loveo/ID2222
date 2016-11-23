@@ -1,8 +1,8 @@
 # App settings
 class Settings
 
-  CONFING = Ostruct.new(
-    b: 6 # number of bits used for registers
+  CONFIG = OpenStruct.new(
+    register_bits: 3 # number of bits used for registers
     )
 
 end

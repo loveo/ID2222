@@ -1,0 +1,56 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.3.0)
+    awesome_print (1.7.0)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
+    codeclimate-engine-rb (0.4.0)
+      virtus (~> 1.0)
+    coderay (1.1.1)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
+    equalizer (0.0.11)
+    ffi (1.9.14-java)
+    ice_nine (0.11.2)
+    method_source (0.8.2)
+    parser (2.3.1.4)
+      ast (~> 2.2)
+    pry (0.10.4-java)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+      spoon (~> 0.0)
+    rainbow (2.1.0)
+    reek (4.5.1)
+      codeclimate-engine-rb (~> 0.4.0)
+      parser (~> 2.3.1, >= 2.3.1.2)
+      rainbow (~> 2.0)
+    ruby-lint (2.3.1)
+      parser (~> 2.2)
+      slop (~> 3.4, >= 3.4.7)
+    slop (3.6.0)
+    spoon (0.0.6)
+      ffi
+    thread_safe (0.3.5-java)
+    virtus (1.0.5)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  awesome_print
+  pry
+  reek
+  ruby-lint
+
+BUNDLED WITH
+   1.13.6

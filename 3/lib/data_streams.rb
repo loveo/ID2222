@@ -1,9 +1,10 @@
 require 'pry'
-require 'osctruct'
+require 'ostruct'
 
-require_relative 'settings.rb'
+require_relative 'settings'
 
-require_relative 'jenkins.rb'
-require_relative 'counter.rb'
-require_relative 'counters.rb'
-require_relative 'hyperball.rb'
+require_relative 'jenkins'
+require_relative 'counter'
+require_relative 'counters'
+require_relative 'hyperball'
+require_relative 'stream_reader'

@@ -7,7 +7,7 @@ class Jenkins
   def self.hash(number)
     hash = 0
 
-    number.to_s.each do |digit|
+    number.to_s.chars.each do |digit|
       hash += digit.ord
       hash &= MAX_32_BIT
       hash += ((hash << 10) & MAX_32_BIT)

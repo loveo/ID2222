@@ -1,7 +1,7 @@
 # Representing a Flajolet-Martin counter
 class Counter
 
-  B = Settings::CONFIG.b
+  B = Settings::CONFIG.register_bits
 
   attr_reader :registers
 
@@ -20,6 +20,7 @@ class Counter
     index = parts[0]
 
     @registers[index] = [@registers[index], parts[1]].max
+    @new_registers = @registers.dup
   end
 
   # Returns the size of the counter
@@ -59,7 +60,7 @@ class Counter
 
   # Returns true if this counter has changed this iteration
   def has_changed?
-    @changed || not new_registers_changed?
+    @changed || new_registers_changed?
   end
 
   # Returns true if the new registers has changed from the current
@@ -99,7 +100,7 @@ class Counter
 
   # Returns the parts from jenkins
   def jenkin_parts(item)
-    bit_string = Jenkin.hash(item).to_s(2).ljust(32, '0')
+    bit_string = Jenkins.hash(item).to_s(2).ljust(32, '0')
 
     register_index = bit_string[-B, B].to_i(2)
     register_value = trailing_zeroes(bit_string[0 ... -B]) + 1
