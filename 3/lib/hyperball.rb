@@ -58,8 +58,9 @@ class Hyperball
 		end
 	end
 
+	
 	def calculate_hyperballs
-		i = 0
+		i = 1
 		while hyperball_once(i)
 			i += 1
 		end
