@@ -8,20 +8,26 @@ class Jenkins
     hash = 0
 
     number.to_s.chars.each do |digit|
-      hash += digit.ord
-      hash &= MAX_32_BIT
-      hash += ((hash << 10) & MAX_32_BIT)
-      hash &= MAX_32_BIT
-      hash ^= hash >> 6
+      hash = hash_digit(digit, hash)
     end
 
+    finalize_hash(hash)
+  end
+
+  def self.hash_digit(digit, hash)
+    hash += digit.ord
+    hash &= MAX_32_BIT
+    hash += ((hash << 10) & MAX_32_BIT)
+    hash &= MAX_32_BIT
+    hash ^= hash >> 6
+  end
+
+  def self.finalize_hash(hash)
     hash += (hash << 3 & MAX_32_BIT)
     hash &= MAX_32_BIT
     hash ^= hash >> 11
     hash += (hash << 15 & MAX_32_BIT)
     hash &= MAX_32_BIT
-
-    hash
   end
 
 end

@@ -17,17 +17,22 @@ class Counters
 
   # Checks if there where any changes made in this iteration
   def any_changes?
-    @counters.empty? || @counters.values.any?(&:value_changed?)
+    @counters.empty? || all_counters.any?(&:value_changed?)
   end
 
   # Applies any pending changes to each counter
   def apply_changes(round)
-    @counters.values.each(&:apply_changes(round))
+    all_counters.each { |counter| counter.apply_changes(round) }
   end
 
   # TODO REMOVE HELPER METHOD
   def get_changed_counters
-    @counters.values.reject { |counter| not counter.value_changed? }
+    all_counters.reject { |counter| not counter.value_changed? }
+  end
+
+  # Returns all the counter instances
+  def all_counters
+    @counters.values
   end
 
   private
