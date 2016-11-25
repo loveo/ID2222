@@ -9,13 +9,13 @@ class Hyperball
 	end
 
 	#Runs one pass of hyperball
-	def hyperball_once
+	def hyperball_once(round)
 		create_workers.each(&:join)
 
 		puts "changes: #{@counters.get_changed_counters.size}"
 
 		if @counters.any_changes?
-			@counters.apply_changes
+			@counters.apply_changes(round)
 			true
 		else
 			false
@@ -59,10 +59,12 @@ class Hyperball
 	end
 
 	def calculate_hyperballs
-		while hyperball_once
+		i = 0
+		while hyperball_once(i)
+			i += 1
 		end
 
-		binding.pry
+		#binding.pry
 	end
 
 end
