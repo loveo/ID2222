@@ -21,8 +21,8 @@ class Counters
   end
 
   # Applies any pending changes to each counter
-  def apply_changes
-    @counters.values.each(&:apply_changes)
+  def apply_changes(round)
+    @counters.values.each(&:apply_changes(round))
   end
 
   # TODO REMOVE HELPER METHOD
