@@ -24,9 +24,16 @@ The remaining leftmost bits are used to count trailing zeros, 2 in this case, wh
 
 
 Using more *registers* will lead to a more accurate estimatation at the cost of memory usage. Each register is initialized to `-inf` which indicates that a counter is *incomplete* or haven't seen enough distinct items.
-The size of the counter can be estimated as the **number of register over the sum of 2 to the power each register value** multiplied by some adjusting constants. This sum becomes 0 if any register value is `-inf`.
-### HyperBall algorithm
+The size of the counter can be estimated as the **number of register over the sum of 2 to the power each register value negated** multiplied by some adjusting constants. This sum becomes 0 if any register value is `-inf`.
 
+### HyperBall algorithm
+The HyperBall algorithm estimates centrality by counting the distances from all nodes to a certain node. This can be done with Flajolet counters by creating a *hyperball* of increasing size (n-hop neighbors) and merging the current nodes counter with all its neighbors. 
+
+Running the hyperball algorithm with size 1 on all nodes will estimate how many nodes each node can reach with one hop. Run the exact same code again and each counter now represents how many nodes each node can reach with 2 hops. By iterating the algorithm and increasing the hypothetical ball size the program will eventually converge and the counters will estimate how many nodes are connected to each node.
+
+By looking at the difference between e.g. iteration 1 and 2 one can see how many nodes can reach a node with exactly 2 hops. Multiply that number with 2 (the ball size) and that's the sum of distances to a node with two hops. By repeating this it's clear that this values add up to the sum of distances to a node from every other node.
+
+A central node will have a low sum of distances since all other nodes are considered to be *close* to that node. A counter with `-inf` in one of its registers is considered as an outlier and will have a large value according to the size function above.
 
 ## Questions
 
