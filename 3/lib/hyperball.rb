@@ -1,7 +1,7 @@
 # Implementation of hyperball algorithm
 class Hyperball
 
-  POOL_SIZE = 8
+  POOL_SIZE = Settings::CONFIG.pool_size
 
   def initialize(edges)
     @counters  = Counters.new

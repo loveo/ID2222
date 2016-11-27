@@ -25,11 +25,6 @@ class Counters
     all_counters.each { |counter| counter.apply_changes(round) }
   end
 
-  # TODO REMOVE HELPER METHOD
-  def get_changed_counters
-    all_counters.reject { |counter| not counter.value_changed? }
-  end
-
   # Returns all the counter instances
   def all_counters
     @counters.values

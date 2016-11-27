@@ -14,6 +14,7 @@ class Jenkins
     finalize_hash(hash)
   end
 
+  # Updates the hash for a digit
   def self.hash_digit(digit, hash)
     hash += digit.ord
     hash &= MAX_32_BIT
@@ -22,6 +23,7 @@ class Jenkins
     hash ^= hash >> 6
   end
 
+  # Runs the final part of the hash algorithm
   def self.finalize_hash(hash)
     hash += (hash << 3 & MAX_32_BIT)
     hash &= MAX_32_BIT
