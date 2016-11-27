@@ -94,4 +94,4 @@ ruby lib/main.rb data/graph.tsv
 The program will output the frequency of each detected centrality.
 
 
-**Estimated run properties:** For 100k nodes and 13M edges the application used ~4GB ram and took ~5 minutes to run.
+**Estimated run properties:** For 100k nodes and 13M edges the application used ~4GB ram and took ~10 minutes to run.
