@@ -1,4 +1,4 @@
-k = 4;
+k = 5;
 
 E = csvread('./data/example1.dat');
 
