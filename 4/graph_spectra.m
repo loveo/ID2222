@@ -16,9 +16,8 @@ title('Graph');
 D_inv = diag(1./sqrt(sum(A, 2)));
 L = D_inv * A * D_inv;
 
-[X,~] = eigs(L, k);
+[X,Xv] = eigs(L);
 Y = normr(X);
-[E,D] = eigs(L,2,'SA');
 
 
 c = kmeans(Y, k);
@@ -36,6 +35,7 @@ for n = 1:length(c)
         end
     end
 end
+
 J = K(1,:);
 J = J(J~=0);
 highlight(H,J, 'NodeColor', 'g');
@@ -52,7 +52,8 @@ J = K(4,:);
 J = J(J~=0);
 highlight(H,J, 'NodeColor', 'c');
 
-Sorted = sort(E(:,2));
+%Eigenvalue 5 is the second smallest.
+Sorted = sort(X(:,5));
 
 figure(2);
 plot(transpose(Sorted));
