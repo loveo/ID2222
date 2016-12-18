@@ -32,6 +32,18 @@ The algorithm uses k-means to cluster the different nodes which makes it a somew
 
 The first graph has four clear components but it is hard to say wether it has five or four communities. When using four clusters, the naivness of k-means is shown by splitting a cluster into two communites. This effected is mitigated when using five clusters which suggests that the graph actually has five communities.
 
+### With 4 clusters
+![graph](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_1_k_4_spectral.png)
+![fiedler](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_1_k_4_fiedler.png)
+
+### With 5 clusters
+![graph](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_1_k_5_spectral.png)
+![fiedler](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_1_k_5_fiedler.png)
+
 ## Graph 2
 
 The second graph has two clear communities which can be seen when plotting the graph. By looking at the fiedler vectors it is very obvious that these communities are tied together tightly and that it is hard to seperate them with few cuts.
+
+### With 2 clusters
+![graph](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_2_k_2_spectral.png)
+![fiedler](https://github.com/loveo/ID2222/blob/master/4/graphs/graph_2_k_2_fiedler.png)
