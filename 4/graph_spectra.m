@@ -1,6 +1,7 @@
 k = 4;
 
-E = csvread('./data/example1.dat');
+%E = csvread('./data/example1.dat');
+E= csvread('D:/Workspace/Github/ID2222/4/data/example1.dat');
 
 
 col1 = E(:,1);
@@ -22,6 +23,7 @@ c = kmeans(Y, k);
 % Plotting
 
 G = graph(A,'OmitSelfLoops');
+figure(1);
 H = plot(G,':ok');
 
 % Place nodes in clusters
